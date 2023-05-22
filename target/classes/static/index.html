@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- En los metadatos incluiremos una particularidad, ya que WebJars es FrontEnd -->
+    <!-- Bootstap -> css(Styles) / jquery -> JavaScript(Functionality/Interactivity) -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<base> es la dirección por defecto de todos los links en este index.html de todos los URL relacionados-->
+    <base href="/"/>
+    <!--<link> define una relación entre este documento y un recurso externo-->
+    <!-- En este caso, una hoja de estilos externa, Bootstrap-->
+    <!-- Atributo type, especifica el formato (MIME type) que traerá de internet-->
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css">
+    <!--<script> En este caso, apunta a un archivo externo donde hay scripts mediante src -->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <title>RentACar</title>
+</head>
+<body>
+    <h1>Home Page</h1>
+
+    <!--Mientras que el usuario no esté autenticado, mostrará el bloque de abajo-->
+    <div class="container unauthenticated">
+        Ingresar con GitHub: 
+        <a href="/oauth2/authorization/github">
+            <button> Ingresar </button>
+        </a>
+    </div>
+
+    <!--En caso de estar autenticado, mostrará este bloque-->
+    <div class="container authenticated" >
+        <!-- <span> subraya una parte del texto -->
+        Sesión inicada como: <span id="user"></span>  
+        <button onclick="location.href='homePage.html';"> Continuar </button>
+    </div>
+
+    <script type="text/javascript">
+        /* Para el endpoint "/user", se hará un get, si la petición es exitosa
+        una función será iniciada, con un parámetro data, que será el que traiga datos*/
+        /* data, es un parámetro donde se guardarán los datos traídos
+        El equivalente a asignar a una variable, data = datos recibidos de la petición $.get()*/
+        $.get("/user", function(data) {
+            /* Al id="usuario" se le asigna lo que resulte en name de data, asignándoselo al user en html
+            resultando en Sesión iniciada como: <span data.name></span>*/    
+            $("#user").html(data.name);
+            // Cuando consiga el nombre, significa que sí fue atuenticado, y esconderá el inicio de sesión
+            $(".unauthenticated").hide();
+            // Y mostrará lo que solo un usuario atenticado puede ver
+            $("authenticated").show();
+        })
+
+    </script>
+    
+
+</body>
+</html>
